@@ -12,6 +12,16 @@ public class TerrainPooling : MonoBehaviour
 
     private Vector2Int previousCell;
 
+    private void OnEnable()
+    {
+        EventManager.PlayerDeath += OnPlayerDeath;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.PlayerDeath -= OnPlayerDeath;
+    }
+
     void Start()
     {
         previousCell = Vector2Int.FloorToInt(player.position / 16);
@@ -38,7 +48,6 @@ public class TerrainPooling : MonoBehaviour
                 {
                     if ((previousCell - dir).x == tile.GetComponent<Tile>().TilePosition.x)
                     { 
-                        Debug.Log("Se movio en el eje X");
                         Vector2Int pos = currentCell + dir;
                         pos.y = tile.GetComponent<Tile>().TilePosition.y;
                         tile.GetComponent<Tile>().SetTilePosition(pos);
@@ -48,7 +57,6 @@ public class TerrainPooling : MonoBehaviour
                 {
                     if ((previousCell - dir).y == tile.GetComponent<Tile>().TilePosition.y)
                     {
-                        Debug.Log("Se movio en el eje Y");
                         Vector2Int pos = currentCell + dir;
                         pos.x = tile.GetComponent<Tile>().TilePosition.x;
                         tile.GetComponent<Tile>().SetTilePosition(pos);
@@ -59,6 +67,11 @@ public class TerrainPooling : MonoBehaviour
 
             previousCell = currentCell;
         }
+    }
+
+    private void OnPlayerDeath()
+    {
+        Destroy(gameObject);
     }
 
 

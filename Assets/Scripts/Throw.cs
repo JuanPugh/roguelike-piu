@@ -7,18 +7,12 @@ public class Throw : MonoBehaviour
     public Transform gunPosition;
     public float shotCooldown;
     private float reloadingTime = 0;
+    private int damage = 10; 
 
     // Update is called once per frame
     void Update()
     {
         Shoot();
-
-        if(Input.GetKey(KeyCode.F)) {
-
-            shotCooldown = 0;
-        } else {
-            shotCooldown = 0.5f;
-        }
     }
     
     private void Shoot() {
@@ -31,7 +25,11 @@ public class Throw : MonoBehaviour
         reloadingTime = 0;
         GameObject b = Instantiate(bulletPrefab, gunPosition.position, Quaternion.identity);
         Bullet bullet = b.GetComponent<Bullet>();
+        bullet.SetDamage(damage);
                 
         bullet.direction = -transform.right;
     }
+
+    public int GetDamage() { return damage; }
+    public void SetDamage(int damage) { this.damage = damage; }
 }

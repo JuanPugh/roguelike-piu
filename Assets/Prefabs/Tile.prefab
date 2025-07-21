@@ -65,10 +65,10 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 8600aa912a82ad9409e19b235a77d86d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,8 +89,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7932798033344189819, guid: 966b5542318c3904986fa8365c279cd1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -4364034832326165938, guid: b6322e833f9025543945ca2894e0b612, type: 3}
+  m_Color: {r: 0.46226418, g: 0.2897386, b: 0.2769224, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -1,15 +1,27 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Enemy : MonoBehaviour
 {
     public int health = 20;
     public int speed = 5;
+    public int exp = 10;
 
     private Rotator rotator;
     private Transform player;
     
 
     public int damage;
+
+    private void OnEnable()
+    {
+        EventManager.PlayerDeath += OnPlayerDeath;
+    }
+    private void OnDisable()
+    {
+        EventManager.PlayerDeath -= OnPlayerDeath;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,20 +36,18 @@ public class Enemy : MonoBehaviour
         if(player == null) return;
         
         rotator.LookAt(player.position);
-        transform.position += -transform.right * speed * Time.deltaTime;
+        transform.position += speed * Time.deltaTime * -transform.right;
 
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collision");
-
         GameObject collider = collision.collider.gameObject;
         if (collider.CompareTag("Proyectile")) {
 
             var bulletDmg = collider.GetComponent<Bullet>().GetDamage();
             HandleDamage(bulletDmg);
-            GameObject.Destroy(collider);
+            Destroy(collider);
 
         }
     }
@@ -47,12 +57,17 @@ public class Enemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-            GameObject.Destroy(this.gameObject);
+            player.GetComponent<Player>().AddExp(exp);
+            GameObject.Destroy(gameObject);
         }
     }
 
-    public int GetDamage()
+    public int GetDamage() { return damage; }
+
+    private void OnPlayerDeath()
     {
-        return this.damage;
+
+        Destroy(this);
     }
+
 }

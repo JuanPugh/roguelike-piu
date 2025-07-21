@@ -4,25 +4,44 @@ public class Spawner : MonoBehaviour
 {
     public float enemyRate;
     public GameObject[] enemiesPrefab;
+    public GameObject bossPrefab;
     float timer;
+    int rounds = 0;
 
     public Transform player;
 
     public int spawnRadius = 10;
 
+    private void OnEnable()
+    {
+        EventManager.PlayerDeath += OnPlayerDeath;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.PlayerDeath -= OnPlayerDeath;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (timer >= enemyRate)
+        if (timer >= enemyRate )
         {
-            SpawnEnemy();
+            SpawnEnemy(randomizeEnemy());
             timer = 0;
+            rounds++;
+        }
+
+        if(rounds == 20)
+        {
+            SpawnEnemy(bossPrefab);
+            rounds = 0;
         }
 
         timer += Time.deltaTime;
     }
 
-    void SpawnEnemy()
+    void SpawnEnemy(GameObject enemyToSpawn)
     {
         // Generate random angle
         float angle = Random.Range(0f, 360f);
@@ -35,7 +54,7 @@ public class Spawner : MonoBehaviour
         Vector3 spawnPosition = player.position + new Vector3(x, y, 0);
 
         // Instantiate the enemy
-        Instantiate(randomizeEnemy(), spawnPosition, Quaternion.identity);
+        Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
     }
 
     public GameObject randomizeEnemy()
@@ -51,5 +70,10 @@ public class Spawner : MonoBehaviour
         {
             return enemiesPrefab[1];
         }
+    }
+
+    private void OnPlayerDeath()
+    {
+        Destroy(gameObject);
     }
 }

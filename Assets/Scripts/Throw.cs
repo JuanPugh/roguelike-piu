@@ -3,7 +3,7 @@ using UnityEngine;
 public class Throw : MonoBehaviour
 {
 
-    public GameObject bulletPrefab;
+    public GameObject shurikenPrefab;
     public Transform gunPosition;
     public float shotCooldown;
     private float reloadingTime = 0;
@@ -23,11 +23,11 @@ public class Throw : MonoBehaviour
         if(!Input.GetMouseButton(0)) return;
 
         reloadingTime = 0;
-        GameObject b = Instantiate(bulletPrefab, gunPosition.position, Quaternion.identity);
-        Bullet bullet = b.GetComponent<Bullet>();
-        bullet.SetDamage(damage);
+        GameObject b = Instantiate(shurikenPrefab, gunPosition.position, Quaternion.identity);
+        Shuriken shuriken = b.GetComponent<Shuriken>();
+        shuriken.SetDamage(damage);
                 
-        bullet.direction = -transform.right;
+        shuriken.direction = transform.forward;
     }
 
     public int GetDamage() { return damage; }

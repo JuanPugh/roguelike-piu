@@ -8,9 +8,7 @@ public class TerrainPooling : MonoBehaviour
     public Transform player;
     public GameObject tilePrefab;
 
-    public int tileSize;
-
-    private Vector2Int previousCell;
+    private Vector3Int previousCell;
 
     private void OnEnable()
     {
@@ -24,40 +22,41 @@ public class TerrainPooling : MonoBehaviour
 
     void Start()
     {
-        previousCell = Vector2Int.FloorToInt(player.position / 16);
+        previousCell = Vector3Int.FloorToInt(player.position / 16);
 
-        for (int x = 0; x < tileSize * 3; x += tileSize)
+        for (int x = 0; x < Tile.TILE_SIZE * 3; x += Tile.TILE_SIZE)
         {
-            for (int y = 0; y < tileSize * 3; y += tileSize)
+            for (int z = 0; z < Tile.TILE_SIZE * 3; z += Tile.TILE_SIZE)
             {
-                tiles.Add(GameObject.Instantiate(tilePrefab, new Vector3(x, y, 0), Quaternion.identity));
+                tiles.Add(Instantiate(tilePrefab, new Vector3(x, 0, z), tilePrefab.transform.rotation));
             }
         }
     }
 
     void Update()
     {
-        Vector2Int currentCell = Vector2Int.FloorToInt(player.position / tileSize);
+        Vector3Int currentCell = Vector3Int.FloorToInt(player.position / Tile.TILE_SIZE);
 
         if (previousCell != currentCell)
         {
+
             foreach (var tile in tiles)
             {
-                Vector2Int dir = currentCell - previousCell;
+                Vector3Int dir = currentCell - previousCell;
                 if (dir.x != 0)
                 {
                     if ((previousCell - dir).x == tile.GetComponent<Tile>().TilePosition.x)
                     { 
-                        Vector2Int pos = currentCell + dir;
-                        pos.y = tile.GetComponent<Tile>().TilePosition.y;
+                        Vector3Int pos = currentCell + dir;
+                        pos.z = tile.GetComponent<Tile>().TilePosition.z;
                         tile.GetComponent<Tile>().SetTilePosition(pos);
                     } 
                 }
                 else
                 {
-                    if ((previousCell - dir).y == tile.GetComponent<Tile>().TilePosition.y)
+                    if ((previousCell - dir).z == tile.GetComponent<Tile>().TilePosition.z)
                     {
-                        Vector2Int pos = currentCell + dir;
+                        Vector3Int pos = currentCell + dir;
                         pos.x = tile.GetComponent<Tile>().TilePosition.x;
                         tile.GetComponent<Tile>().SetTilePosition(pos);
                     }

@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnemyOcclusion
-  m_Shader: {fileID: -6465566751694194690, guid: 577fd9b3e1237554fa5839fa744fd9e1, type: 3}
+  m_Name: TerrainOclussion
+  m_Shader: {fileID: -6465566751694194690, guid: bdb34d0bcec90a649953a2f1bfd3b5b2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -67,13 +67,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DistanceToCenter: 0.33
     - _EnableExternalAlpha: 0
+    - _NoiseScale: 27.79
+    - _PixelSize: 5
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Radius: 12
+    - _Radius: 15
+    - _ShadowIntensity: 73.8
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.14066394, g: 0.2735849, b: 0.15066873, a: 1}
+    - _PrimaryColor: {r: 0.10929157, g: 0.1509434, b: 0.10466359, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SecundaryColor: {r: 0.17276238, g: 0.254717, b: 0.15739588, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

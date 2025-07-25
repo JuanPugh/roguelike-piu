@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Shuriken : MonoBehaviour
 {
     public Vector3 direction;
-    public float bulletSpeed = 20;
+    public float speed = 20;
     private float distance = 0;
 
     private int damage = 0;
@@ -11,7 +11,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 velocity = bulletSpeed * Time.deltaTime * direction;
+        Vector3 velocity = speed * Time.deltaTime * direction;
         distance += velocity.magnitude;
         transform.position += velocity;
 

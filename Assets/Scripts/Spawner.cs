@@ -50,8 +50,9 @@ public class Spawner : MonoBehaviour
 
         // Calculate spawn position
         float x = Mathf.Sin(radians) * spawnRadius;
-        float y = Mathf.Cos(radians) * spawnRadius;
-        Vector3 spawnPosition = player.position + new Vector3(x, y, 0);
+        float z = Mathf.Cos(radians) * spawnRadius;
+        Debug.Log(player.position);
+        Vector3 spawnPosition = player.position + new Vector3(x, 5, z);
 
         // Instantiate the enemy
         Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);

@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,10 +11,10 @@ public class Player : MonoBehaviour
     [SerializeField] private int exp = 0;
     [SerializeField] private int max_exp = 100;
 
-    private Rotator rotator;
+    private Camera main_camera;
 
     public Vector2 movement;
-    private Rigidbody2D rb;
+    private Rigidbody rb;
 
     public int getHealth() { return health; }
 
@@ -35,8 +37,8 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        rotator = GetComponent<Rotator>();
+        rb = GetComponent<Rigidbody>();
+        main_camera = Camera.main;
     }
 
     // Update is called once per frame
@@ -44,6 +46,11 @@ public class Player : MonoBehaviour
     {
         Move();
         LookAtMouse();
+
+        if(Input.GetKey(KeyCode.T))
+        {
+            Time.timeScale = 0;
+        }
 
     }
 
@@ -56,24 +63,36 @@ public class Player : MonoBehaviour
         //rb.AddForce(movement * Time.deltaTime * speed, ForceMode2D.Impulse);
 
         movement *= Time.deltaTime * speed;
-        transform.position += new Vector3(movement.x, movement.y, 0);
+        transform.position += new Vector3(movement.x, 0, movement.y);
     }
 
     private void LookAtMouse()
     {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        rotator.LookAt(mousePos);
-    }
+        (bool success, Vector3 mousePos) = GetMousePosition();
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        GameObject collider = collision.collider.gameObject;
-        if (collider.CompareTag("Enemy"))
+        if(success)
         {
-            HandleDamage(collider.GetComponent<Enemy>().GetDamage());
+            Vector3 direction = mousePos - transform.position;
+            direction.y = 0;
+            transform.forward = direction;
         }
     }
+
+    private (bool, Vector3) GetMousePosition()
+    {
+        Ray ray = main_camera.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, 1))
+        {
+            return (true, hitInfo.point);
+
+        } else
+        {
+
+            return (false, Vector3.zero);
+        }
+    }
+
 
     private void HandleDamage(int damage)
     {
@@ -88,9 +107,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    // The function checks if the player leveled up, if it did, then levels up and sums the overflow of xp.
-    // also increases the max exp by 25%
     private void CheckExp() 
     { 
         if(exp >= max_exp)
@@ -109,5 +125,16 @@ public class Player : MonoBehaviour
         this.exp += exp;
         CheckExp();
         EventManager.OnPlayerGainExp(this.exp);
+    }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+
+        GameObject collider = collision.collider.gameObject;
+        if (collider.CompareTag("Enemy"))
+        {
+            HandleDamage(collider.GetComponent<Enemy>().GetDamage());
+        }
     }
 }
